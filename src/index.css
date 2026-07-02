@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Parth Tooling — "Precision Forge" global styles
+   Dark industrial / steel. Arc-blue + molten-ember accents.
+   ============================================================ */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: theme('colors.line');
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ink text-fg font-sans antialiased;
+    font-feature-settings: 'cv05' 1, 'ss01' 1;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: theme('colors.arc.DEFAULT');
+    color: #04121f;
+  }
+
+  /* Consistent, on-brand focus ring */
+  :focus-visible {
+    outline: 2px solid theme('colors.arc.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: theme('colors.ink');
+  }
+  ::-webkit-scrollbar-thumb {
+    background: theme('colors.line-bright');
+    border: 3px solid theme('colors.ink');
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.arc.dim');
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tightest;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-container px-5 sm:px-8 lg:px-10;
+  }
+
+  /* Mono eyebrow / section index label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.28em] text-arc;
+  }
+
+  /* Blueprint grid background (subtle engineering paper) */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(61, 160, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(61, 160, 255, 0.06) 1px, transparent 1px);
+    background-size: 46px 46px;
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(rgba(138, 153, 173, 0.16) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  /* Brushed steel surface for cards */
+  .steel-panel {
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008) 26%, rgba(0, 0, 0, 0.28)),
+      theme('colors.panel');
+    box-shadow: theme('boxShadow.inset-line'), theme('boxShadow.panel');
+  }
+
+  .text-arc-gradient {
+    background: linear-gradient(180deg, #ffffff 8%, #b9d4f2 55%, #6fbbff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-line;
+  }
+
+  /* Card hover lift primitive */
+  .lift {
+    @apply transition-[transform,box-shadow,border-color] duration-300 ease-out will-change-transform;
+  }
+  .lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@layer utilities {
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  .pause-on-hover:hover {
+    animation-play-state: paused;
+  }
+
+  /* Film grain — an SVG turbulence noise tile, blended over media for texture. */
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Cinematic vignette — darkens the edges to focus the centre. */
+  .vignette {
+    box-shadow: inset 0 0 180px 40px rgba(0, 0, 0, 0.75);
+  }
+
+  /* Colour grade for footage so it reads on-brand (steel blues, ember warmth). */
+  .grade-video {
+    filter: contrast(1.07) saturate(1.14) brightness(1.02);
+  }
+}
+
+/* ============================================================
+   Lenis smooth scroll (see SmoothScroll.tsx)
+   ============================================================ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ============================================================
+   Reduced motion — honor user preference everywhere.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
