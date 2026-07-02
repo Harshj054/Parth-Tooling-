@@ -12,6 +12,7 @@ import { ClientMark } from '@/components/ui/ClientMark'
 import { Glyph, type GlyphName } from '@/components/visuals/Glyph'
 import { Crosshair } from '@/components/visuals/Crosshair'
 import { Hero } from '@/components/sections/Hero'
+import { ProcessInterlude } from '@/components/sections/ProcessInterlude'
 import { ScrollScrubSection } from '@/components/sections/ScrollScrubSection'
 import { CTABand } from '@/components/sections/CTABand'
 
@@ -24,6 +25,8 @@ export default function Home() {
   return (
     <>
       <Hero />
+
+      <ProcessInterlude />
 
       <ScrollScrubSection />
 

@@ -136,8 +136,14 @@ export function ScrollScrubSection() {
 
         {/* Atmosphere + grade */}
         <Haze />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/35 to-ink/55" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/70 to-transparent" />
+        {/* Emerge from — and dissolve back into — pure black so the hero above
+            and the sections below melt into one continuous cinematic column.
+            No hard seam: the footage reveals itself as it scrolls up. */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[48%] bg-gradient-to-b from-ink via-ink/70 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-ink via-ink/55 to-transparent" />
+        {/* Left scrim keeps the captions legible while the centre-right footage
+            stays bright enough to actually read the cut. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/45 to-transparent" />
         <div className="vignette pointer-events-none absolute inset-0" />
         <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-15" aria-hidden="true" />
 
