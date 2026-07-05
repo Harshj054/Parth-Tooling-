@@ -1,7 +1,8 @@
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { ContactShadows, Environment, Lightformer, OrbitControls, useGLTF } from '@react-three/drei'
 import { useReducedMotion } from 'framer-motion'
+import * as THREE from 'three'
 import { cn } from '@/lib/utils'
 
 /**
@@ -15,8 +16,16 @@ import { cn } from '@/lib/utils'
 function Model({ src }: { src: string }) {
   const { scene } = useGLTF(src)
   // The GLB is pre-normalised (centred, longest side = 2 units). The impeller's
-  // axis is +Z; stand it up so it spins like a turntable.
-  return <primitive object={scene} rotation={[-Math.PI / 2, 0, 0]} />
+  // axis is +Z; stand it up so it spins like a turntable. Dial back the
+  // reflected environment so the polished steel doesn't blow out to white.
+  const tuned = useMemo(() => {
+    scene.traverse((o) => {
+      const m = (o as THREE.Mesh).material as THREE.MeshStandardMaterial | undefined
+      if (m && 'envMapIntensity' in m) m.envMapIntensity = 0.6
+    })
+    return scene
+  }, [scene])
+  return <primitive object={tuned} rotation={[-Math.PI / 2, 0, 0]} />
 }
 
 export function PartViewer({ src, className }: { src: string; className?: string }) {
@@ -37,10 +46,10 @@ export function PartViewer({ src, className }: { src: string; className?: string
 
           {/* Studio softboxes → crisp reflections on the steel, no external HDR. */}
           <Environment resolution={256}>
-            <Lightformer intensity={2.2} position={[0, 4, 3]} scale={[8, 8, 1]} />
-            <Lightformer intensity={1.3} position={[-5, 1, 2]} scale={[3, 8, 1]} color="#dbeafe" />
-            <Lightformer intensity={1.3} position={[5, 1, 2]} scale={[3, 8, 1]} color="#ffffff" />
-            <Lightformer intensity={0.7} position={[0, -4, 2]} scale={[8, 4, 1]} color="#fff2e8" />
+            <Lightformer intensity={1.7} position={[0, 4, 3]} scale={[8, 8, 1]} />
+            <Lightformer intensity={1.05} position={[-5, 1, 2]} scale={[3, 8, 1]} color="#dbeafe" />
+            <Lightformer intensity={1.05} position={[5, 1, 2]} scale={[3, 8, 1]} color="#ffffff" />
+            <Lightformer intensity={0.6} position={[0, -4, 2]} scale={[8, 4, 1]} color="#fff2e8" />
           </Environment>
 
           <ContactShadows position={[0, -1.15, 0]} opacity={0.32} scale={7} blur={2.6} far={4} />

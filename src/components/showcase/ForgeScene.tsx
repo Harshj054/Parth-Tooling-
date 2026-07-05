@@ -34,7 +34,9 @@ const RAM_IDLE = 1.9
 const RAM_CONTACT = 0.72
 const RAM_HALF = 0.4 // half of ram box height
 const DIE_TOP = -0.2
-const PART_Y = 0.2
+// The finished part floats well clear of the die so it can be freely tilted
+// without any edge dipping into the bolster below.
+const PART_Y = 0.62
 
 export type BlankShape = 'billet' | 'disc' | 'strip'
 type Anim = { phase: 'idle' | 'forming' | 'formed'; t: number; rise: number; heat: number }
@@ -191,6 +193,10 @@ function PartPresenter({
     cloned.traverse((o) => {
       const m = (o as THREE.Mesh).material as THREE.MeshStandardMaterial | undefined
       if (m && 'emissive' in m) {
+        // Tame the studio reflections so the polished part doesn't blow out to
+        // pure white (and bloom) when it rotates to face a softbox.
+        m.envMapIntensity = 0.55
+        m.roughness = Math.min(1, (m.roughness ?? 0.4) + 0.15)
         m.emissive = HEAT.clone()
         m.emissiveIntensity = 0
         list.push(m)
@@ -213,7 +219,7 @@ function PartPresenter({
     const move = (e: PointerEvent) => {
       if (!drag.current.on) return
       rot.current.y += (e.clientX - drag.current.lx) * 0.01
-      rot.current.x = THREE.MathUtils.clamp(rot.current.x + (e.clientY - drag.current.ly) * 0.008, -0.75, 0.75)
+      rot.current.x = THREE.MathUtils.clamp(rot.current.x + (e.clientY - drag.current.ly) * 0.008, -0.6, 0.6)
       drag.current.lx = e.clientX
       drag.current.ly = e.clientY
     }
@@ -221,7 +227,7 @@ function PartPresenter({
     const wheel = (e: WheelEvent) => {
       e.preventDefault()
       camera.position.z = THREE.MathUtils.clamp(camera.position.z + e.deltaY * 0.0025, 4.4, 9)
-      camera.lookAt(0, 0.55, 0)
+      camera.lookAt(0, 0.6, 0)
     }
     el.addEventListener('pointerdown', down)
     window.addEventListener('pointermove', move)
@@ -242,7 +248,7 @@ function PartPresenter({
     if (!grp) return
     grp.visible = a.rise > 0.001
     grp.position.y = lerp(DIE_TOP + 0.05, PART_Y, a.rise)
-    grp.scale.setScalar(0.55 * ease(a.rise))
+    grp.scale.setScalar(0.5 * ease(a.rise))
     const glow = a.heat * 2.8
     for (const m of mats) m.emissiveIntensity = glow
     if (active) {
@@ -262,7 +268,7 @@ function PartPresenter({
 /* Cinematic camera: punch-in + impact shake during the slam, then settles. */
 const CAM_BASE_Y = 1.5
 const CAM_BASE_Z = 6.8
-const CAM_TARGET: [number, number, number] = [0, 0.55, 0]
+const CAM_TARGET: [number, number, number] = [0, 0.6, 0]
 
 function CameraChoreography({ anim, reduce }: { anim: React.MutableRefObject<Anim>; reduce: boolean }) {
   const { camera } = useThree()
@@ -517,15 +523,15 @@ export function ForgeScene({
     <div className={cn('relative h-full w-full', className)}>
       <Canvas dpr={[1, 2]} camera={{ position: [0, 1.5, 6.8], fov: 40 }} gl={{ antialias: true, alpha: true }}>
         <ambientLight intensity={0.35} />
-        <directionalLight position={[5, 8, 4]} intensity={1.05} />
+        <directionalLight position={[5, 8, 4]} intensity={0.9} />
 
         <Suspense fallback={null}>
           <Forge src={src} shape={shape} run={run} reduce={reduce} onDone={onDone} />
           <Environment resolution={256}>
-            <Lightformer intensity={2.2} position={[0, 5, 4]} scale={[10, 10, 1]} />
-            <Lightformer intensity={1.4} position={[-6, 2, 3]} scale={[3, 10, 1]} color="#dbeafe" />
-            <Lightformer intensity={1.4} position={[6, 2, 3]} scale={[3, 10, 1]} color="#ffffff" />
-            <Lightformer intensity={0.7} position={[0, -3, 3]} scale={[10, 3, 1]} color="#fff2e8" />
+            <Lightformer intensity={1.8} position={[0, 5, 4]} scale={[10, 10, 1]} />
+            <Lightformer intensity={1.05} position={[-6, 2, 3]} scale={[3, 10, 1]} color="#dbeafe" />
+            <Lightformer intensity={1.05} position={[6, 2, 3]} scale={[3, 10, 1]} color="#ffffff" />
+            <Lightformer intensity={0.6} position={[0, -3, 3]} scale={[10, 3, 1]} color="#fff2e8" />
           </Environment>
         </Suspense>
 
@@ -533,8 +539,8 @@ export function ForgeScene({
 
         <EffectComposer>
           <Bloom
-            intensity={0.9}
-            luminanceThreshold={0.55}
+            intensity={0.8}
+            luminanceThreshold={0.62}
             luminanceSmoothing={0.25}
             mipmapBlur
             radius={0.75}
