@@ -58,6 +58,7 @@ export const nav: NavItem[] = [
       { label: 'Die Elements', to: '/products#die-elements', desc: 'Punches, buttons, pillars & bushes' },
     ],
   },
+  { label: '3D Showcase', to: '/showcase' },
   { label: 'Infrastructure', to: '/infrastructure' },
   { label: 'Clients', to: '/clients' },
   { label: 'Contact', to: '/contact' },
