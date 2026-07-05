@@ -149,6 +149,18 @@
   }
 }
 
+/* Forge bay fills the screen when its fullscreen button is used. */
+[data-forge-bay]:fullscreen {
+  height: 100vh !important;
+  width: 100vw;
+  border-radius: 0;
+}
+[data-forge-bay]:-webkit-full-screen {
+  height: 100vh !important;
+  width: 100vw;
+  border-radius: 0;
+}
+
 /* ============================================================
    Lenis smooth scroll (see SmoothScroll.tsx)
    ============================================================ */

@@ -80,6 +80,18 @@ export default {
           '0%, 100%': { transform: 'translate(0, 0) scale(1.12)' },
           '50%': { transform: 'translate(-7%, 6%) scale(1)' },
         },
+        'chip-float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        'chip-sweep': {
+          '0%': { transform: 'translateX(-140%) skewX(-14deg)' },
+          '55%, 100%': { transform: 'translateX(320%) skewX(-14deg)' },
+        },
+        'chip-pulse': {
+          '0%': { transform: 'scale(0.92)', opacity: '0.6' },
+          '100%': { transform: 'scale(1.35)', opacity: '0' },
+        },
       },
       animation: {
         marquee: 'marquee 40s linear infinite',
@@ -90,6 +102,9 @@ export default {
         float: 'float 6s ease-in-out infinite',
         'drift-a': 'drift-a 20s ease-in-out infinite',
         'drift-b': 'drift-b 26s ease-in-out infinite',
+        'chip-float': 'chip-float 3.2s ease-in-out infinite',
+        'chip-sweep': 'chip-sweep 3.6s ease-in-out infinite',
+        'chip-pulse': 'chip-pulse 2.2s ease-out infinite',
       },
     },
   },

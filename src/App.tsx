@@ -13,6 +13,7 @@ const Clients = lazy(() => import('@/pages/Clients'))
 const Contact = lazy(() => import('@/pages/Contact'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 const Viewer = lazy(() => import('@/pages/Viewer'))
+const ForgeLab = lazy(() => import('@/pages/ForgeLab'))
 
 export default function App() {
   // reducedMotion="user" makes every Framer animation honor the OS preference.
@@ -21,8 +22,9 @@ export default function App() {
       <Preloader />
       <BrowserRouter>
         <Routes>
-          {/* Full-screen 3D prototype, outside the marketing chrome. */}
+          {/* Full-screen 3D prototypes, outside the marketing chrome. */}
           <Route path="/lab" element={<Viewer />} />
+          <Route path="/forge-lab" element={<ForgeLab />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

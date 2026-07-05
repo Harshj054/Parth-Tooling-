@@ -1,6 +1,6 @@
 import { useSEO } from '@/lib/seo'
 import { PageHeader } from '@/components/sections/PageHeader'
-import { ProductShowcase } from '@/components/showcase/ProductShowcase'
+import { ForgeBay } from '@/components/showcase/ForgeBay'
 import { CTABand } from '@/components/sections/CTABand'
 
 export default function Showcase() {
@@ -21,7 +21,7 @@ export default function Showcase() {
         intro="Pick a component to watch it formed — then take the finished part in your hands and turn it over in real-time 3D, straight from our CAD."
       />
 
-      <ProductShowcase />
+      <ForgeBay />
 
       <CTABand />
     </>

@@ -6,6 +6,8 @@
    card still plays the forming sequence and reads as "in production".
    ============================================================ */
 
+import type { BlankShape } from '@/components/showcase/ForgeScene'
+
 export type ShowcasePart = {
   id: string
   name: string
@@ -15,6 +17,8 @@ export type ShowcasePart = {
   tolerance: string
   dim: string
   blurb: string
+  /** Raw stock shape shown feeding the die. */
+  blank: BlankShape
   /** Web-optimized GLB in /public/models. Present → live 3D. */
   model?: string
 }
@@ -29,6 +33,7 @@ export const showcaseParts: ShowcasePart[] = [
     tolerance: '±0.02 mm',
     dim: 'Ø 192 mm',
     blurb: 'Six-vane closed impeller for industrial pump assemblies — balanced and flow-tested.',
+    blank: 'billet',
     model: '/models/impeller.glb',
   },
   {
@@ -40,6 +45,7 @@ export const showcaseParts: ShowcasePart[] = [
     tolerance: '±0.05 mm',
     dim: '120 × 80 mm',
     blurb: 'Formed and pierced in a single strip pass — holes, bends and embossed ribs in one hit.',
+    blank: 'strip',
   },
   {
     id: 'busbar-terminal',
@@ -50,6 +56,7 @@ export const showcaseParts: ShowcasePart[] = [
     tolerance: '±0.03 mm',
     dim: '64 × 22 mm',
     blurb: 'High-conductivity terminal with controlled bend radius and plated contact face.',
+    blank: 'strip',
   },
   {
     id: 'motor-lamination',
@@ -60,6 +67,7 @@ export const showcaseParts: ShowcasePart[] = [
     tolerance: '±0.015 mm',
     dim: 'Ø 96 mm',
     blurb: 'Burr-controlled laminations blanked and stacked into a motor core.',
+    blank: 'disc',
   },
   {
     id: 'sensor-housing',
@@ -70,6 +78,7 @@ export const showcaseParts: ShowcasePart[] = [
     tolerance: '±0.04 mm',
     dim: 'Ø 34 × 28 mm',
     blurb: 'Deep-drawn shell with a machined sealing land for automotive sensors.',
+    blank: 'disc',
   },
   {
     id: 'fixture-base',
@@ -80,5 +89,6 @@ export const showcaseParts: ShowcasePart[] = [
     tolerance: '±0.005 mm',
     dim: '160 × 120 mm',
     blurb: 'Locating fixture that makes a batch measurable — datums ground and lapped.',
+    blank: 'billet',
   },
 ]
